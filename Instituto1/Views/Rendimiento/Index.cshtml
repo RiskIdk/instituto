@@ -1,0 +1,37 @@
+@model RendimientoViewModel
+@{ ViewData["Title"] = "Rendimiento Académico"; }
+
+<div class="card">
+    <h2>Rendimiento Académico por Curso</h2>
+    @if (Model.Resultados.Any())
+    {
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th><th>Período</th><th>Evaluados</th>
+                        <th>Promedio</th><th>Aprobados</th><th>Reprobados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Resultados)
+                    {
+                        <tr>
+                            <td>@r.Curso</td>
+                            <td>@r.Periodo</td>
+                            <td>@r.Evaluados</td>
+                            <td>
+                                @{ var bn = r.PromedioNota >= 70 ? "badge-success"
+                                          : r.PromedioNota >= 50 ? "badge-warning" : "badge-danger"; }
+                                <span class="badge @bn">@r.PromedioNota.ToString("F2")</span>
+                            </td>
+                            <td><span class="badge badge-success">@r.Aprobados</span></td>
+                            <td><span class="badge badge-danger">@r.Reprobados</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <p class="empty-msg">Sin datos de calificaciones disponibles.</p> }
+</div>

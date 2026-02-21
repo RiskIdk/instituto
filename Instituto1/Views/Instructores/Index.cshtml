@@ -1,0 +1,56 @@
+@model InstructoresViewModel
+@{ ViewData["Title"] = "Instructores"; }
+
+<div class="card">
+    <h2>Carga de Trabajo por Instructor</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Instructor</th><th>Especialidad</th>
+                    <th>Cursos Asignados</th><th>Total Estudiantes</th><th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Instructores)
+                {
+                    <tr>
+                        <td>@r.Instructor</td>
+                        <td>@r.Especialidad</td>
+                        <td><span class="badge badge-info">@r.CursosAsignados</span></td>
+                        <td><strong>@r.TotalEstudiantes</strong></td>
+                        <td><a href="/Instructores?idInstructor=@r.IdInstructor" class="btn-sm">Ver cursos</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.IdInstructorSel > 0)
+{
+    var nombre = Model.Instructores.FirstOrDefault(i => i.IdInstructor == Model.IdInstructorSel)?.Instructor ?? "";
+    <div class="card">
+        <h2>Cursos de: @nombre</h2>
+        @if (Model.Detalle.Any())
+        {
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr><th>Curso</th><th>Período</th><th>Modalidad</th><th>Inscritos</th><th>Cupo</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Detalle)
+                        {
+                            <tr>
+                                <td>@d.Curso</td><td>@d.Periodo</td><td>@d.Modalidad</td>
+                                <td>@d.Inscritos</td><td>@d.Cupo</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else { <p class="empty-msg">Sin cursos registrados.</p> }
+    </div>
+}

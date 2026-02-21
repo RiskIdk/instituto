@@ -1,0 +1,82 @@
+@model HistorialViewModel
+@{ ViewData["Title"] = "Historial Académico"; }
+
+<div class="card">
+    <h2> Historial Académico y Certificados</h2>
+
+    <form method="get">
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>Cédula del Estudiante</label>
+                <input type="text" name="cedula" value="@Model.BusquedaCedula" placeholder="Ej: 0912345678" />
+            </div>
+            <div class="filter-group">
+                <label>O seleccionar de la lista</label>
+                <select name="idEstudiante">
+                    <option value="0">-- Seleccione --</option>
+                    @foreach (var e in Model.Estudiantes)
+                    {
+                        <option value="@e.IdEstudiante" selected="@(Model.IdEstudiante == e.IdEstudiante)">
+                            @e.Nombre (@e.Cedula)
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="filter-group" style="max-width:140px;">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.NombreEst))
+    {
+        <div class="info-box">
+            <span><strong>Estudiante:</strong> @Model.NombreEst</span>
+            <span><strong>Cédula:</strong> @Model.CedulaEst</span>
+            <span><strong>Correo:</strong> @Model.CorreoEst</span>
+        </div>
+    }
+
+    @if (Model.Resultados.Any())
+    {
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th><th>Período</th><th>Modalidad</th>
+                        <th>Estado</th><th>Nota Final</th><th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Resultados)
+                    {
+                        <tr>
+                            <td>@r.Curso</td>
+                            <td>@r.Periodo</td>
+                            <td>@r.Modalidad</td>
+                            <td>
+                                @{ var be = r.Estado=="Finalizado" ? "badge-success"
+                                         : r.Estado=="Retirado"   ? "badge-danger" : "badge-info"; }
+                                <span class="badge @be">@r.Estado</span>
+                            </td>
+                            <td>@(r.NotaFinal.HasValue ? r.NotaFinal.Value.ToString("F2") : "N/A")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(r.Resultado))
+                                {
+                                    <span class="badge @(r.Resultado=="Aprobado" ? "badge-success" : "badge-danger")">
+                                        @r.Resultado
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (Model.BusquedaCedula != "" || Model.IdEstudiante > 0)
+    {
+        <p class="empty-msg">No se encontraron registros para este estudiante.</p>
+    }
+</div>

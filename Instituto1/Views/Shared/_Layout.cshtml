@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Instituto Académico</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">
+            <h1>Instituto de Capacitación Tecnológica</h1>
+            <p>Sistema de Consultas Académicas</p>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Menú">&#9776;</button>
+    </header>
+
+    <nav id="mainNav">
+        <a href="/"             class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home"          ? "active" : "")">Dashboard</a>
+        <a href="/Participacion" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Participacion" ? "active" : "")"> Participación</a>
+        <a href="/Instructores"  class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Instructores"  ? "active" : "")">Instructores</a>
+        <a href="/Historial"     class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Historial"     ? "active" : "")"> Historial</a>
+        <a href="/Tendencias"    class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Tendencias"    ? "active" : "")"> Tendencias</a>
+        <a href="/Ocupacion"     class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Ocupacion"     ? "active" : "")"> Ocupación</a>
+        <a href="/Rendimiento"   class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Rendimiento"   ? "active" : "")">Rendimiento</a>
+    </nav>
+
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <p>Instituto de Capacitación Tecnológica</p>
+    </footer>
+
+    <script>
+        
+        const toggle = document.getElementById('navToggle');
+        const nav    = document.getElementById('mainNav');
+        toggle.addEventListener('click', () => nav.classList.toggle('open'));
+
+        
+        nav.querySelectorAll('a').forEach(a =>
+            a.addEventListener('click', () => nav.classList.remove('open'))
+        );
+    </script>
+
+</body>
+</html>

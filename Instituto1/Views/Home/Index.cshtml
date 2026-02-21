@@ -1,0 +1,87 @@
+@model DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<div class="grid-stats">
+    <div class="stat-box">
+        <div class="num">@Model.TotalEstudiantes</div>
+        <div class="lbl">Estudiantes Registrados</div>
+    </div>
+    <div class="stat-box" style="border-top-color:#10b981;">
+        <div class="num">@Model.TotalCursos</div>
+        <div class="lbl">Cursos Disponibles</div>
+    </div>
+    <div class="stat-box" style="border-top-color:#f59e0b;">
+        <div class="num">@Model.TotalInstructores</div>
+        <div class="lbl">Instructores Activos</div>
+    </div>
+    <div class="stat-box" style="border-top-color:#ef4444;">
+        <div class="num">@Model.TotalMatriculas</div>
+        <div class="lbl">Matrículas Totales</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2> Participación por Curso</h2>
+    @if (Model.Participacion.Any())
+    {
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th><th>Categoría</th><th>Matrículas</th>
+                        <th>Finalizados</th><th>Retirados</th><th>En Curso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Participacion)
+                    {
+                        <tr>
+                            <td>@r.NombreCurso</td>
+                            <td>@r.Categoria</td>
+                            <td><strong>@r.TotalMatriculas</strong></td>
+                            <td><span class="badge badge-success">@r.Finalizados</span></td>
+                            <td><span class="badge badge-danger">@r.Retirados</span></td>
+                            <td><span class="badge badge-info">@r.EnCurso</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <p class="empty-msg">Sin datos disponibles.</p> }
+</div>
+
+<div class="card">
+    <h2> Ocupación de Cursos Programados</h2>
+    @if (Model.Ocupacion.Any())
+    {
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th><th>Período</th><th>Modalidad</th>
+                        <th>Cupo</th><th>Inscritos</th><th>Ocupación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Ocupacion)
+                    {
+                        <tr>
+                            <td>@r.Curso</td>
+                            <td>@r.Periodo</td>
+                            <td>@r.Modalidad</td>
+                            <td>@r.Cupo</td>
+                            <td>@r.Inscritos</td>
+                            <td>
+                                @{ var bc = r.PorcentajeOcupacion >= 75 ? "badge-success"
+                                          : r.PorcentajeOcupacion >= 40 ? "badge-warning" : "badge-danger"; }
+                                <span class="badge @bc">@r.PorcentajeOcupacion.ToString("F1")%</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <p class="empty-msg">Sin datos disponibles.</p> }
+</div>

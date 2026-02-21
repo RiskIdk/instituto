@@ -1,0 +1,34 @@
+@model TendenciasViewModel
+@{ ViewData["Title"] = "Tendencias de Matrícula"; }
+
+<div class="card">
+    <h2> Tendencias de Matrícula por Período</h2>
+    @if (Model.Resultados.Any())
+    {
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Período</th><th>Inicio</th><th>Fin</th>
+                        <th>Matrículas</th><th>Finalizados</th><th>Retirados</th><th>En Curso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Resultados)
+                    {
+                        <tr>
+                            <td><strong>@r.Periodo</strong></td>
+                            <td>@r.FechaInicio.ToString("dd/MM/yyyy")</td>
+                            <td>@r.FechaFin.ToString("dd/MM/yyyy")</td>
+                            <td><strong>@r.TotalMatriculas</strong></td>
+                            <td><span class="badge badge-success">@r.Finalizados</span></td>
+                            <td><span class="badge badge-danger">@r.Retirados</span></td>
+                            <td><span class="badge badge-info">@r.EnCurso</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else { <p class="empty-msg">Sin datos disponibles.</p> }
+</div>
